@@ -13,7 +13,26 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            List($viewModel.data, id: \.self) { index in
+            if viewModel.isLoading {
+                PlaceholderLoading()
+                
+            } else {
+                ListView(data: $viewModel.data){
+                      await viewModel.getData()
+                }
+            }
+        }.onAppear {
+            print("loading state: \(viewModel.isLoading)")
+        }
+    }
+    
+    struct ListView: View {
+        
+        var data: Binding<[String]>
+        var refreshCall: () async -> Void
+        
+        var body: some View {
+            List(data, id: \.self) { index in
                 HStack(alignment: .top){
                     VStack(alignment: .leading){
                         Text("Hi im the title")
@@ -39,18 +58,58 @@ struct ContentView: View {
                         )
                         .frame(height: 25)
                         .cornerRadius(25)
-                }.frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+                }
+                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
             }
             .refreshable{
                 print("Im refreshing")
-                await viewModel.getData()
+                await refreshCall()
             }
             Spacer()
         }
-        
+    }
+}
+
+
+struct PlaceholderLoading: View {
+    var body: some View {
+        VStack{
+            HStack(alignment: .top){
+                VStack(alignment: .leading){
+                    Text("Hi im the title")
+                        .font(.system(size: 18))
+                    Text("sub title")
+                        .font(.system(size: 14))
+                    Text("sub title")
+                        .font(.system(size: 14))
+                    Text("sub title")
+                        .font(.system(size: 14))
+                        .padding(.top, 2)
+                }
+                .frame(maxWidth: .infinity,alignment: .leading)
+                Spacer()
+                Button("Hello") {
+                    print("button has pressed")
+                }.foregroundColor(.white) // This line is redundant and can be removed
+                    .padding() // Add padding to ensure there's enough space for the text
+                    .background(
+                        RoundedRectangle(cornerRadius: 5)
+                            .stroke(Color.white, lineWidth: 2)
+                            .background(Color.gray)
+                    )
+                    .frame(height: 25)
+                    .cornerRadius(25)
+            }
+            .redacted(reason: .placeholder)
+            .shimmer()
+            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+            .padding()
+        }
+        Spacer()
     }
 }
 
 #Preview {
-    ContentView()
+    //ContentView()
+    PlaceholderLoading()
 }

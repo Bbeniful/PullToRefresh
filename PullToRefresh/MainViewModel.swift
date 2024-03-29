@@ -10,9 +10,11 @@ import Foundation
 class MainViewModel: ObservableObject{
     
     @Published var data: [String] = []
+    @Published var isLoading: Bool = false
     
     func getData() async {
         do {
+            print("loading statu getdata: \(isLoading)")
             try await loadData()
         } catch {
             print("Error happened", error)
@@ -21,8 +23,14 @@ class MainViewModel: ObservableObject{
     
     
     func loadData() async throws{
-        try? await Task.sleep(nanoseconds: 3_000_000_000)
+        setLoading(true)
+        try? await Task.sleep(nanoseconds: 5_000_000_000)
+        self.setLoading(false)
         DispatchSerialQueue.main.async { [weak self] in
+            print("loading statue loaddata: \(self?.isLoading)")
+
+            print("loading statue loaddata: \(self?.isLoading)")
+
             self?.data = self!.createData()
         }
        
@@ -34,6 +42,14 @@ class MainViewModel: ObservableObject{
             tmpArray.append("Item \(index)")
         }
         return tmpArray
+    }
+    
+    private func setLoading(_ value: Bool) {
+        DispatchSerialQueue.main.async { [weak self] in
+            self?.isLoading = value
+        }
+            
+        
     }
    
 }
