@@ -14,6 +14,8 @@
 		9DAB4FF32BB5EF6400E06D9B /* PullToRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAB4FF22BB5EF6400E06D9B /* PullToRefreshTests.swift */; };
 		9DAB4FFD2BB5EF6400E06D9B /* PullToRefreshUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAB4FFC2BB5EF6400E06D9B /* PullToRefreshUITests.swift */; };
 		9DAB4FFF2BB5EF6400E06D9B /* PullToRefreshUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAB4FFE2BB5EF6400E06D9B /* PullToRefreshUITestsLaunchTests.swift */; };
+		9DAB500C2BB5EF7B00E06D9B /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAB500B2BB5EF7B00E06D9B /* MainViewModel.swift */; };
+		9DAB500E2BB6E06200E06D9B /* ShimmerSkeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAB500D2BB6E06200E06D9B /* ShimmerSkeleton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		9DAB4FF82BB5EF6400E06D9B /* PullToRefreshUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PullToRefreshUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DAB4FFC2BB5EF6400E06D9B /* PullToRefreshUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshUITests.swift; sourceTree = "<group>"; };
 		9DAB4FFE2BB5EF6400E06D9B /* PullToRefreshUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullToRefreshUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9DAB500B2BB5EF7B00E06D9B /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		9DAB500D2BB6E06200E06D9B /* ShimmerSkeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerSkeleton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 				9DAB4FE32BB5EF6200E06D9B /* ContentView.swift */,
 				9DAB4FE52BB5EF6400E06D9B /* Assets.xcassets */,
 				9DAB4FE72BB5EF6400E06D9B /* Preview Content */,
+				9DAB500B2BB5EF7B00E06D9B /* MainViewModel.swift */,
+				9DAB500D2BB6E06200E06D9B /* ShimmerSkeleton.swift */,
 			);
 			path = PullToRefresh;
 			sourceTree = "<group>";
@@ -259,6 +265,8 @@
 			files = (
 				9DAB4FE42BB5EF6200E06D9B /* ContentView.swift in Sources */,
 				9DAB4FE22BB5EF6200E06D9B /* PullToRefreshApp.swift in Sources */,
+				9DAB500E2BB6E06200E06D9B /* ShimmerSkeleton.swift in Sources */,
+				9DAB500C2BB5EF7B00E06D9B /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
