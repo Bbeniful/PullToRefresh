@@ -12,28 +12,39 @@ class MainViewModel: ObservableObject{
     @Published var data: [String] = []
     @Published var isLoading: Bool = false
     
+    init(data: [String] = [], isLoading: Bool = false) {
+        self.data = data
+        self.isLoading = isLoading
+        
+    }
+    
     func getData() async {
         do {
             print("loading statu getdata: \(isLoading)")
-            try await loadData()
+            try await loadData(delay:5_000_000_000)
         } catch {
             print("Error happened", error)
         }
     }
     
-    
-    func loadData() async throws{
-        setLoading(true)
-        try? await Task.sleep(nanoseconds: 5_000_000_000)
-        self.setLoading(false)
-        DispatchSerialQueue.main.async { [weak self] in
-            print("loading statue loaddata: \(self?.isLoading)")
-
-            print("loading statue loaddata: \(self?.isLoading)")
-
-            self?.data = self!.createData()
+    func testLoading() {
+        Task {
+            self.isLoading = true
+            print("Show Progress: \(self.isLoading ? "True" : "False")")
+            try await Task.sleep(nanoseconds: 5_000_000_000)
+            self.isLoading = false
+            print("Show Progress: \(self.isLoading ? "True" : "False")")
         }
-       
+    }
+    
+    
+    func loadData(delay second: UInt64) async throws{
+        testLoading()
+        try? await Task.sleep(nanoseconds: second)
+        DispatchQueue.main.async {
+            self.data = self.createData()
+
+        }
     }
     
     private func createData() -> [String] {
@@ -46,7 +57,7 @@ class MainViewModel: ObservableObject{
     
     private func setLoading(_ value: Bool) {
         DispatchSerialQueue.main.async { [weak self] in
-            self?.isLoading = value
+            //self?.isLoading = value
         }
             
         

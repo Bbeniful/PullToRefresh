@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject var viewModel = MainViewModel()
+    @State var testBool = false
     
     var body: some View {
         VStack {
@@ -18,11 +19,17 @@ struct ContentView: View {
                 
             } else {
                 ListView(data: $viewModel.data){
-                      await viewModel.getData()
+                    
+                    try? await viewModel.loadData(delay: 5_000_000_000)
                 }
             }
         }.onAppear {
-            print("loading state: \(viewModel.isLoading)")
+            print("loading state: \(self.testBool)")
+        }
+        .task {
+            viewModel.testLoading()
+
+            try? await viewModel.loadData(delay: 0)
         }
     }
     
@@ -33,6 +40,25 @@ struct ContentView: View {
         
         var body: some View {
             List(data, id: \.self) { index in
+                ListItem()
+            }
+            .refreshable{
+                print("Im refreshing")
+                await refreshCall()
+            }
+            .frame( maxWidth: .infinity)
+            .edgesIgnoringSafeArea(.bottom)
+            .listStyle(GroupedListStyle()) // or PlainListStyle()
+            Spacer()
+        }
+    }
+}
+
+
+struct PlaceholderLoading: View {
+    var body: some View {
+        List(1..<100) { index in
+            VStack{
                 HStack(alignment: .top){
                     VStack(alignment: .leading){
                         Text("Hi im the title")
@@ -59,57 +85,51 @@ struct ContentView: View {
                         .frame(height: 25)
                         .cornerRadius(25)
                 }
-                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
+                .redacted(reason: .placeholder)
+                .shimmer()
             }
-            .refreshable{
-                print("Im refreshing")
-                await refreshCall()
-            }
-            Spacer()
         }
+        .frame( maxWidth: .infinity)
+        .edgesIgnoringSafeArea(.bottom)
+        .listStyle(GroupedListStyle())
+       
     }
 }
 
-
-struct PlaceholderLoading: View {
+struct ListItem: View {
     var body: some View {
-        VStack{
-            HStack(alignment: .top){
-                VStack(alignment: .leading){
-                    Text("Hi im the title")
-                        .font(.system(size: 18))
-                    Text("sub title")
-                        .font(.system(size: 14))
-                    Text("sub title")
-                        .font(.system(size: 14))
-                    Text("sub title")
-                        .font(.system(size: 14))
-                        .padding(.top, 2)
-                }
-                .frame(maxWidth: .infinity,alignment: .leading)
-                Spacer()
-                Button("Hello") {
-                    print("button has pressed")
-                }.foregroundColor(.white) // This line is redundant and can be removed
-                    .padding() // Add padding to ensure there's enough space for the text
-                    .background(
-                        RoundedRectangle(cornerRadius: 5)
-                            .stroke(Color.white, lineWidth: 2)
-                            .background(Color.gray)
-                    )
-                    .frame(height: 25)
-                    .cornerRadius(25)
+        HStack(alignment: .top){
+            VStack(alignment: .leading){
+                Text("Hi im the title")
+                    .font(.system(size: 18))
+                Text("sub title")
+                    .font(.system(size: 14))
+                Text("sub title")
+                    .font(.system(size: 14))
+                Text("sub title")
+                    .font(.system(size: 14))
+                    .padding(.top, 2)
             }
-            .redacted(reason: .placeholder)
-            .shimmer()
-            .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
-            .padding()
+            .frame(maxWidth: .infinity,alignment: .leading)
+            Spacer()
+            Button("Hello") {
+                print("button has pressed")
+            }.foregroundColor(.white) // This line is redundant and can be removed
+                .padding() // Add padding to ensure there's enough space for the text
+                .background(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.white, lineWidth: 2)
+                        .background(Color.gray)
+                )
+                .frame(height: 25)
+                .cornerRadius(25)
         }
-        Spacer()
+        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment: .leading)
     }
 }
 
 #Preview {
     //ContentView()
-    PlaceholderLoading()
+    //PlaceholderLoading()
+    ListItem()
 }
